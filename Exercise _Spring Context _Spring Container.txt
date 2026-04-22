@@ -1,0 +1,45 @@
+//Q1 :
+hey from message1 
+Reason: Because getMessage1() is marked with @Bean, and Spring executes it during application startup.
+
+//Q2 :
+hey from message1 
+hey from message2
+Reason: Because getMessage2() depends on getMessage1(), so Spring executes getMessage1() first, then getMessage2().
+
+//Q3 : 
+hey from message1
+hey from message3
+hey from message2
+
+Reason: Because getMessage2() depends on getMessage3(), so Spring executes getMessage3() before getMessage2().
+
+// Q4:
+ Without MainController:
+hey from message3
+hey from message2
+hey from message1
+
+Reason:
+Because getMessage2() depends on getMessage3(), Spring creates getMessage3() first, then getMessage2().
+getMessage1() has no dependencies, so it is created afterward.
+Therefore, the execution order follows the dependency chain.
+
+With MainController:Error
+Reason:
+Because getMessage1() depends on MainController, and MainController depends on getMessage2(), and getMessage2() depends on getMessage3().
+This creates a dependency chain that results in a circular dependency, so the application fails to start.
+
+
+//Q5:
+hey from message3
+hey from message2
+hey from Main controller
+hey from message1
+
+Reason:
+Because MainController depends on getMessage2() using @Qualifier("2"), and getMessage2() depends on getMessage3() using @Qualifier("3").
+So Spring creates getMessage3() first, then getMessage2(), then MainController, and finally getMessage1() because it depends on MainController.
+
+
+
